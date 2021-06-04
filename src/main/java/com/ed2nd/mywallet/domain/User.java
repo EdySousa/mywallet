@@ -2,51 +2,48 @@ package com.ed2nd.mywallet.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-public class Wallet implements Serializable {
+public class User implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	private String firstName;
+	private String lastName;
 
-	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
-	private Date date;
-	private String description;
+	@Column(unique = true)
+	private String email;
 
 	@JsonIgnore
-	@ManyToOne
-	@JoinColumn(name = "user_id")
-	private User user;
+	private String password;
 
-	@OneToMany(mappedBy = "wallet", cascade = CascadeType.ALL)
-	private List<Account> accounts = new ArrayList<>();
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+	private List<Wallet> wallets = new ArrayList<>();
 
-	public Wallet() {
+	public User() {
 
 	}
 
-	public Wallet(Integer id, Date date, String description, User user) {
+	public User(Integer id, String firstName, String lastName, String email, String password) {
 		super();
 		this.id = id;
-		this.date = date;
-		this.description = description;
-		this.user = user;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.email = email;
+		this.password = password;
 	}
 
 	public Integer getId() {
@@ -57,36 +54,44 @@ public class Wallet implements Serializable {
 		this.id = id;
 	}
 
-	public Date getDate() {
-		return date;
+	public String getFirstName() {
+		return firstName;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
-	public String getDescription() {
-		return description;
+	public String getLastName() {
+		return lastName;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
-	public User getUser() {
-		return user;
+	public String getEmail() {
+		return email;
 	}
 
-	public void setUser(User user) {
-		this.user = user;
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
-	public List<Account> getAccounts() {
-		return accounts;
+	public String getPassword() {
+		return password;
 	}
 
-	public void setAccount(List<Account> accounts) {
-		this.accounts = accounts;
+	public void setPassword(String password) {
+		this.password = password;
+	}
+
+	public List<Wallet> getWallets() {
+		return wallets;
+	}
+
+	public void setWallets(List<Wallet> wallets) {
+		this.wallets = wallets;
 	}
 
 	@Override
@@ -105,7 +110,7 @@ public class Wallet implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Wallet other = (Wallet) obj;
+		User other = (User) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
@@ -113,5 +118,4 @@ public class Wallet implements Serializable {
 			return false;
 		return true;
 	}
-
 }

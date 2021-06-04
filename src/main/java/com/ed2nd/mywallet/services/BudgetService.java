@@ -43,7 +43,7 @@ public class BudgetService {
 		try {
 			repo.deleteById(id);
 		} catch (DataIntegrityViolationException e) {
-			throw new DataIntegrityException("Não é possível elimiar Budget que tem Transição associada");
+			throw new DataIntegrityException("Não é possível elimiar Budget que tem Transação associada");
 		}
 	}
 

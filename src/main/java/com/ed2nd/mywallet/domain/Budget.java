@@ -50,6 +50,10 @@ public class Budget implements Serializable {
 		this.date = date;
 		this.account = account;
 	}
+	
+	public Double getTotalAvailable() {
+		return budget - spent;
+	}
 
 	public Integer getId() {
 		return id;
@@ -81,6 +85,10 @@ public class Budget implements Serializable {
 
 	public void setSpent(Double spent) {
 		this.spent = spent;
+	}
+	
+	public void addSpent(Double spent) {
+		this.spent += spent;
 	}
 
 	public Date getDate() {

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -33,10 +34,10 @@ public class Account implements Serializable {
 	@JoinColumn(name = "wallet_id")
 	private Wallet wallet;
 
-	@OneToMany(mappedBy = "account")
+	@OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
 	private List<Budget> budgets = new ArrayList<>();
 
-	@OneToMany(mappedBy = "account")
+	@OneToMany(mappedBy = "account", cascade = CascadeType.ALL)
 	private List<Transaction> transactions = new ArrayList<>();
 
 	public Account() {
@@ -86,16 +87,16 @@ public class Account implements Serializable {
 		return budgets;
 	}
 
-	public void setBudgets(List<Budget> budgets) {
-		this.budgets = budgets;
+	public void addBudgets(Budget budget) {
+		this.budgets.add(budget);
 	}
 
 	public List<Transaction> getTransactions() {
 		return transactions;
 	}
 
-	public void setTransactions(List<Transaction> transactions) {
-		this.transactions = transactions;
+	public void addTransactions(Transaction transaction) {
+		this.transactions.add(transaction);
 	}
 
 	@Override
