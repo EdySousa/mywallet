@@ -23,7 +23,7 @@ public class UserNewDTO implements Serializable {
 	private String lastName;
 
 	@NotEmpty(message = "Mandatory Field")
-	@Email(message = "Invalid email")
+	@Email(message = "Email should be valid")
 	private String email;
 
 	private Date date;

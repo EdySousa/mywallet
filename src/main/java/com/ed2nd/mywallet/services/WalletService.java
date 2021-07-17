@@ -1,12 +1,15 @@
 package com.ed2nd.mywallet.services;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ed2nd.mywallet.domain.User;
 import com.ed2nd.mywallet.domain.Wallet;
+import com.ed2nd.mywallet.dto.WalletNewDTO;
 import com.ed2nd.mywallet.repositories.WalletRepository;
 import com.ed2nd.mywallet.services.exception.ObjectNotFoundException;
 
@@ -15,6 +18,9 @@ public class WalletService {
 
 	@Autowired
 	private WalletRepository repo;
+
+	@Autowired
+	private UserService userService;
 
 	public List<Wallet> findAll() {
 		return repo.findAll();
@@ -32,13 +38,35 @@ public class WalletService {
 	}
 
 	public Wallet update(Wallet obj) {
-		find(obj.getId());
-		return repo.save(obj);
+		Wallet newObj = find(obj.getId());
+		updateData(newObj, obj);
+		return repo.save(newObj);
 	}
 
 	public void delete(Integer id) {
 		find(id);
 		repo.deleteById(id);
+	}
+
+	public List<Wallet> findAllByUserIdFromDateBetween(Integer userID, Date startDate, Date endDate) {
+		return repo.findAllByUserIdFromDateBetween(userID, startDate, endDate);
+	}
+
+	public List<Wallet> findAllByUserId(Integer userID) {
+		return repo.findAllByUserId(userID);
+	}
+
+	public Wallet fromDTO(WalletNewDTO objDto) {
+
+		objDto.setDate((objDto.getDate() != null) ? objDto.getDate() : new Date());
+		User user = userService.find(objDto.getUserId());
+
+		return new Wallet(null, objDto.getDate(), objDto.getDescription(), user);
+	}
+
+	private void updateData(Wallet newObj, Wallet obj) {
+		newObj.setDate(obj.getDate() != null ? obj.getDate() : newObj.getDate());
+		newObj.setDescription(obj.getDescription());
 	}
 
 }

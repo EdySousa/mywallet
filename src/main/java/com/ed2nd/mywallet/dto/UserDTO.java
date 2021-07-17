@@ -24,8 +24,7 @@ public class UserDTO implements Serializable {
 	@Length(min = 1, max = 120, message = "The size should be between 1 and 120 characters")
 	private String lastName;
 
-	@NotEmpty(message = "Mandatory Field")
-	@Email(message = "Invalid email")
+	@Email(message = "Email should be valid")
 	private String email;
 
 	public UserDTO() {

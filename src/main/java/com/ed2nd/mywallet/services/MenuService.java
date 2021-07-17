@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.ed2nd.mywallet.domain.Menu;
-import com.ed2nd.mywallet.dto.MenuDTO;
 import com.ed2nd.mywallet.repositories.MenuRepository;
 import com.ed2nd.mywallet.services.exception.ObjectNotFoundException;
 
@@ -42,8 +41,4 @@ public class MenuService {
 		repo.deleteById(id);
 	}
 	
-	public Menu fromDTO(MenuDTO obj) {
-		return new Menu(obj.getId(), obj.getName());
-	}
-
 }

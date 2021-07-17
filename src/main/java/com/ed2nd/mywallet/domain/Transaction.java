@@ -9,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Positive;
 
 import com.ed2nd.mywallet.domain.enums.TransactionType;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -21,8 +22,11 @@ public class Transaction implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	
 	private TransactionType type;
 	private String name;
+	
+	@Positive(message = "The Value should be numeric positive")
 	private Double value;
 	
 	@JsonFormat(pattern="dd/MM/yyyy HH:mm")

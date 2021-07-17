@@ -6,6 +6,9 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
 
 @Entity
 public class Menu implements Serializable {
@@ -14,6 +17,9 @@ public class Menu implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
+	
+	@NotEmpty(message = "Mandatory Field")
+	@Length(min = 5, max = 120, message = "The size should be between 5 and 120 characters")
 	private String name;
 
 	public Menu() {

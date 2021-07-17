@@ -14,6 +14,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.ed2nd.mywallet.domain.enums.TransactionType;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -49,6 +50,20 @@ public class Account implements Serializable {
 		this.name = name;
 		this.date = date;
 		this.wallet = wallet;
+	}
+
+	public Double getIncome() {
+		return transactions.stream().filter(x -> x.getType().equals(TransactionType.INCOME))
+				.mapToDouble(a -> a.getValue()).sum();
+	}
+
+	public Double getExpense() {
+		return transactions.stream().filter(x -> x.getType().equals(TransactionType.EXPENSE))
+				.mapToDouble(a -> a.getValue()).sum();
+	}
+
+	public Double getBalance() {
+		return getIncome() - getExpense();
 	}
 
 	public Integer getId() {
@@ -87,16 +102,16 @@ public class Account implements Serializable {
 		return budgets;
 	}
 
-	public void addBudgets(Budget budget) {
-		this.budgets.add(budget);
+	public void setBudgets(List<Budget> budgets) {
+		this.budgets = budgets;
 	}
 
 	public List<Transaction> getTransactions() {
 		return transactions;
 	}
 
-	public void addTransactions(Transaction transaction) {
-		this.transactions.add(transaction);
+	public void seTransactions(List<Transaction> transactions) {
+		this.transactions = transactions;
 	}
 
 	@Override

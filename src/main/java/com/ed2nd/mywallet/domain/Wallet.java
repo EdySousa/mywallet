@@ -48,6 +48,22 @@ public class Wallet implements Serializable {
 		this.description = description;
 		this.user = user;
 	}
+	
+	public Integer getTotalAccount() {
+		return accounts.size();
+	}
+
+	public Double getIncome() {
+		return accounts.stream().mapToDouble(x -> x.getIncome()).sum();
+	}
+
+	public Double getSpent() {
+		return accounts.stream().mapToDouble(x -> x.getExpense()).sum();
+	}
+
+	public Double getBalance() {
+		return getIncome() - getSpent();
+	}
 
 	public Integer getId() {
 		return id;

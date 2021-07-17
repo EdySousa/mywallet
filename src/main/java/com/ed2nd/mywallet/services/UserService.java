@@ -24,15 +24,20 @@ public class UserService {
 
 	@Autowired
 	private WalletRepository walletRepository;
-
+	
+	
+	@Autowired
+	private WalletService walletService;
+	
+	
 	public List<User> findAll() {
 		return repo.findAll();
 	}
 
 	public User find(Integer id) {
 		Optional<User> obj = repo.findById(id);
-		return obj.orElseThrow(() -> new ObjectNotFoundException(
-				"Object not found! Id: " + id + ", Type: " + User.class.getName()));
+		return obj.orElseThrow(
+				() -> new ObjectNotFoundException("Object not found! Id: " + id + ", Type: " + User.class.getName()));
 	}
 
 	@Transactional
@@ -70,7 +75,16 @@ public class UserService {
 	private void updateData(User newObj, User obj) {
 		newObj.setFirstName(obj.getFirstName());
 		newObj.setLastName(obj.getLastName());
-		newObj.setEmail(obj.getEmail());
+		newObj.setEmail(obj.getEmail() != null ? obj.getEmail() : newObj.getEmail());
+	}
+
+	public User findOverviewByUserFromDateBetween(Integer userID, Date startDate, Date endDate) {
+		
+		User user = find(userID);
+		List<Wallet> wallets = walletService.findAllByUserIdFromDateBetween(userID, startDate, endDate);
+		user.setWallets(wallets);
+		
+		return user;
 	}
 
 }

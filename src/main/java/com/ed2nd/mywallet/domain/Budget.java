@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.validation.constraints.Positive;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -24,35 +25,39 @@ public class Budget implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	private String name;
-	private Double budget;
-	private Double spent;
 	
-	@JsonFormat(pattern="dd/MM/yyyy HH:mm")
+	@Positive(message = "The Budget value should be numeric positive")
+	private Double budget;
+
+	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private Date date;
 
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "account_id")
 	private Account account;
-	
+
 	@OneToMany(mappedBy = "budget")
 	private List<Transaction> transactions = new ArrayList<>();
 
 	public Budget() {
 	}
 
-	public Budget(Integer id, String name, Double budget, Double spent, Date date, Account account) {
+	public Budget(Integer id, String name, Double budget, Date date, Account account) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.budget = budget;
-		this.spent = spent;
 		this.date = date;
 		this.account = account;
 	}
-	
-	public Double getTotalAvailable() {
-		return budget - spent;
+
+	public Double getSpent() {
+		return transactions.stream().filter(x -> x.getBudget() != null).mapToDouble(x -> x.getValue()).sum();
+	}
+
+	public Double getBalance() {
+		return getBudget() - getSpent();
 	}
 
 	public Integer getId() {
@@ -79,18 +84,6 @@ public class Budget implements Serializable {
 		this.budget = budget;
 	}
 
-	public Double getSpent() {
-		return spent;
-	}
-
-	public void setSpent(Double spent) {
-		this.spent = spent;
-	}
-	
-	public void addSpent(Double spent) {
-		this.spent += spent;
-	}
-
 	public Date getDate() {
 		return date;
 	}
@@ -106,7 +99,7 @@ public class Budget implements Serializable {
 	public void setAccount(Account account) {
 		this.account = account;
 	}
-	
+
 	public List<Transaction> getTransactions() {
 		return transactions;
 	}
