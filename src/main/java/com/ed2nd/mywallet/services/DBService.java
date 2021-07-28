@@ -14,6 +14,7 @@ import com.ed2nd.mywallet.domain.Menu;
 import com.ed2nd.mywallet.domain.Transaction;
 import com.ed2nd.mywallet.domain.User;
 import com.ed2nd.mywallet.domain.Wallet;
+import com.ed2nd.mywallet.domain.enums.Perfil;
 import com.ed2nd.mywallet.domain.enums.TransactionType;
 import com.ed2nd.mywallet.repositories.AccountRespository;
 import com.ed2nd.mywallet.repositories.BudgetRepository;
@@ -55,6 +56,7 @@ public class DBService {
 		menuRepository.saveAll(Arrays.asList(mc1, mc2, mc3, mc4, mc5, mc6));
 
 		User user1 = new User(null, "Edvaldo", "Segundo", "Edvaldo.Segundo@hotmail.com", pe.encode("123"));
+		user1.addPerfil(Perfil.ADMIN);
 		User user2 = new User(null, "Edvaldinho", "Soares", "EdvaldinhoSoares@hotmail.com",  pe.encode("123"));
 
 		Wallet w1 = new Wallet(null, sdf.parse("09/05/2021 21:45"), "Carteira Principal", user1);

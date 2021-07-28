@@ -2,16 +2,22 @@ package com.ed2nd.mywallet.domain;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
+import com.ed2nd.mywallet.domain.enums.Perfil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -33,8 +39,12 @@ public class User implements Serializable {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
 	private List<Wallet> wallets = new ArrayList<>();
 
-	public User() {
+	@ElementCollection(fetch = FetchType.EAGER)
+	@CollectionTable(name = "PERFIS")
+	private Set<Perfil> perfis = new HashSet<>();
 
+	public User() {
+		addPerfil(Perfil.USER);
 	}
 
 	public User(Integer id, String firstName, String lastName, String email, String password) {
@@ -44,6 +54,7 @@ public class User implements Serializable {
 		this.lastName = lastName;
 		this.email = email;
 		this.password = password;
+		addPerfil(Perfil.USER);
 	}
 
 	public Integer getId() {
@@ -84,6 +95,18 @@ public class User implements Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	public Set<Perfil> getPerfis() {
+		return perfis;
+	}
+
+	public void setPerfis(Set<Perfil> perfis) {
+		this.perfis = perfis;
+	}
+
+	public void addPerfil(Perfil perfil) {
+		perfis.add(perfil);
 	}
 
 	public List<Wallet> getWallets() {
