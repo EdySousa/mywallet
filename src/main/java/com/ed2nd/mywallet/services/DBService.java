@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Arrays;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.ed2nd.mywallet.domain.Account;
@@ -23,6 +24,9 @@ import com.ed2nd.mywallet.repositories.WalletRepository;
 
 @Service
 public class DBService {
+	
+	@Autowired
+	private BCryptPasswordEncoder pe;
 	
 	@Autowired
 	private MenuRepository menuRepository;
@@ -50,8 +54,8 @@ public class DBService {
 
 		menuRepository.saveAll(Arrays.asList(mc1, mc2, mc3, mc4, mc5, mc6));
 
-		User user1 = new User(null, "Edvaldo", "Segundo", "Edvaldo.Segundo@hotmail.com", "123");
-		User user2 = new User(null, "Edvaldinho", "Soares", "EdvaldinhoSoares@hotmail.com", "123");
+		User user1 = new User(null, "Edvaldo", "Segundo", "Edvaldo.Segundo@hotmail.com", pe.encode("123"));
+		User user2 = new User(null, "Edvaldinho", "Soares", "EdvaldinhoSoares@hotmail.com",  pe.encode("123"));
 
 		Wallet w1 = new Wallet(null, sdf.parse("09/05/2021 21:45"), "Carteira Principal", user1);
 		Wallet w2 = new Wallet(null, sdf.parse("31/05/2021 14:33"), "Carteira Secundária", user2);

@@ -25,6 +25,9 @@ public class UserNewDTO implements Serializable {
 	@NotEmpty(message = "Mandatory Field")
 	@Email(message = "Email should be valid")
 	private String email;
+	
+	@NotEmpty(message = "Mandatory Field")
+	private String password;
 
 	private Date date;
 	private String description;
@@ -33,10 +36,11 @@ public class UserNewDTO implements Serializable {
 
 	}
 
-	public UserNewDTO(String firstName, String lastName, String email, Date date, String description) {
+	public UserNewDTO(String firstName, String lastName, String email, String password, Date date, String description) {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.email = email;
+		this.setPassword(password);
 		this.date = date;
 		this.description = description;
 	}
@@ -63,6 +67,14 @@ public class UserNewDTO implements Serializable {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+	
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public Date getDate() {

@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,9 @@ import com.ed2nd.mywallet.services.exception.ObjectNotFoundException;
 
 @Service
 public class UserService {
+	
+	@Autowired
+	private BCryptPasswordEncoder pe;
 
 	@Autowired
 	private UserRepository repo;
@@ -66,7 +70,7 @@ public class UserService {
 	public User fromDTO(UserNewDTO obj) {
 		Date date = (obj.getDate() != null) ? obj.getDate() : new Date();
 
-		User user = new User(null, obj.getFirstName(), obj.getLastName(), obj.getEmail(), null);
+		User user = new User(null, obj.getFirstName(), obj.getLastName(), obj.getEmail(), pe.encode(obj.getPassword()));
 		Wallet wallet = new Wallet(null, date, obj.getDescription(), user);
 		user.getWallets().add(wallet);
 		return user;
