@@ -52,7 +52,7 @@ public class User implements Serializable {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.email = email;
+		this.email = email.toLowerCase();
 		this.password = password;
 		addPerfil(Perfil.USER);
 	}
@@ -141,4 +141,31 @@ public class User implements Serializable {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("User id: ");
+		builder.append(id);
+		builder.append(", First Name: ");
+		builder.append(firstName);
+		builder.append(", Last Name: ");
+		builder.append(lastName);
+		builder.append(", email: ");
+		builder.append(email);
+		
+		for(Wallet wal: getWallets()) {
+			builder.append("\nWallets:\n");
+			builder.append(wal.getDescription());
+		}
+		
+		for(Perfil per: getPerfis()) {
+			builder.append("\nPerfis:\n");
+			builder.append(per.name());
+		}
+		
+		return builder.toString();
+	}
+	
+	
 }

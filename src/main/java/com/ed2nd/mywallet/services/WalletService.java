@@ -11,6 +11,8 @@ import com.ed2nd.mywallet.domain.User;
 import com.ed2nd.mywallet.domain.Wallet;
 import com.ed2nd.mywallet.dto.WalletNewDTO;
 import com.ed2nd.mywallet.repositories.WalletRepository;
+import com.ed2nd.mywallet.security.UserSS;
+import com.ed2nd.mywallet.services.exception.AuthorizationException;
 import com.ed2nd.mywallet.services.exception.ObjectNotFoundException;
 
 @Service
@@ -49,11 +51,27 @@ public class WalletService {
 	}
 
 	public List<Wallet> findAllByUserIdFromDateBetween(Integer userID, Date startDate, Date endDate) {
-		return repo.findAllByUserIdFromDateBetween(userID, startDate, endDate);
+		UserSS userSS = UserService.authenticated();
+		
+		if(userSS == null) {
+			throw new AuthorizationException("Acess dinied");
+		}
+		
+		User user = userService.find(userID);
+		
+		return repo.findByUserDateBetween(user, startDate, endDate);
 	}
 
 	public List<Wallet> findAllByUserId(Integer userID) {
-		return repo.findAllByUserId(userID);
+		UserSS userSS = UserService.authenticated();
+		
+		if(userSS == null) {
+			throw new AuthorizationException("Acess dinied");
+		}
+		
+		User user = userService.find(userID);
+		
+		return repo.findByUser(user);
 	}
 
 	public Wallet fromDTO(WalletNewDTO objDto) {
