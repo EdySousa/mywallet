@@ -75,7 +75,7 @@ public class UserService {
 		obj = repo.save(obj);
 		walletRepository.saveAll(obj.getWallets());
 		
-		emailService.sendUserConfirmationEmail(obj);
+		emailService.sendUserConfirmationHtmlEmail(obj);
 		
 		return obj;
 	}

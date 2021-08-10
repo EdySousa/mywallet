@@ -20,21 +20,17 @@ public class MockEmailService extends AbstractEmailService {
 	}
 
 	@Override
-	public void sendUserConfirmationHtmlEmail(User obj) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void sendHtmlEmail(MimeMessage msg) {
-		// TODO Auto-generated method stub
-		
+		LOG.info("Send HTML email simulation...");
+		LOG.info(msg.toString());
+		LOG.info("Email sent");
 	}
+	
 
 	@Override
 	public void sendNewPasswordEmail(User user, String newPass) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

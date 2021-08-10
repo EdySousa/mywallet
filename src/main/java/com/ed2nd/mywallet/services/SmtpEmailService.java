@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 
 import com.ed2nd.mywallet.domain.User;
 
@@ -15,7 +16,10 @@ public class SmtpEmailService extends AbstractEmailService {
 	private static final Logger LOG = LoggerFactory.getLogger(SmtpEmailService.class);
 	
 	@Autowired
-	private MailSender mailSender;
+	private MailSender mailSender;	
+	
+	@Autowired
+	private JavaMailSender javaMailSender;
 
 	@Override
 	public void sendEmail(SimpleMailMessage msg) {
@@ -26,17 +30,12 @@ public class SmtpEmailService extends AbstractEmailService {
 	}
 
 	@Override
-	public void sendUserConfirmationHtmlEmail(User obj) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void sendHtmlEmail(MimeMessage msg) {
-		// TODO Auto-generated method stub
-		
+		LOG.info("Sending HTML email...");
+		javaMailSender.send(msg);
+		LOG.info("Html Email sent");
 	}
-
+	
 	@Override
 	public void sendNewPasswordEmail(User user, String newPass) {
 		// TODO Auto-generated method stub

@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title th:remove="all">Create new count</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+	<div>
+		<h1>
+			User Id: <span th:text="${user.id}"> </span>
+		</h1>
+		
+		<p>
+			Name: <span th:text="${user.firstName}"></span>
+		</p>
+		
+		<p>
+			Email: <span th:text="${user.email}"></span>
+		</p>
+	</div>
+</body>
+</html>
