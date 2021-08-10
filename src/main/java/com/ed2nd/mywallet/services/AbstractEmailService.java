@@ -70,4 +70,20 @@ public abstract class AbstractEmailService implements EmailService {
 		return mimeMessage;
 	}
 
+	@Override
+	public void sendNewPasswordEmail(User user, String newPass) {
+		SimpleMailMessage sm = prepareNewPasswordEmail(user, newPass);
+		sendEmail(sm);
+	}
+
+	protected SimpleMailMessage prepareNewPasswordEmail(User user, String newPass) {
+		SimpleMailMessage sm = new SimpleMailMessage();
+		sm.setTo(user.getEmail());
+		sm.setFrom(sender);
+		sm.setSubject("New Paword Request");
+		sm.setSentDate(new Date(System.currentTimeMillis()));
+		sm.setText("New password: " + newPass);
+		return sm;
+	}
+
 }

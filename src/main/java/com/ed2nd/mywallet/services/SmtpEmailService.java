@@ -9,15 +9,13 @@ import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 
-import com.ed2nd.mywallet.domain.User;
-
 public class SmtpEmailService extends AbstractEmailService {
-	
+
 	private static final Logger LOG = LoggerFactory.getLogger(SmtpEmailService.class);
-	
+
 	@Autowired
-	private MailSender mailSender;	
-	
+	private MailSender mailSender;
+
 	@Autowired
 	private JavaMailSender javaMailSender;
 
@@ -26,7 +24,7 @@ public class SmtpEmailService extends AbstractEmailService {
 		LOG.info("Sending email...");
 		mailSender.send(msg);
 		LOG.info("Email sent");
-		
+
 	}
 
 	@Override
@@ -35,11 +33,4 @@ public class SmtpEmailService extends AbstractEmailService {
 		javaMailSender.send(msg);
 		LOG.info("Html Email sent");
 	}
-	
-	@Override
-	public void sendNewPasswordEmail(User user, String newPass) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }
