@@ -43,6 +43,12 @@ public class UserResource {
 		return ResponseEntity.ok().body(obj);
 	}
 
+	@RequestMapping(value = "/email", method = RequestMethod.GET)
+	public ResponseEntity<User> findByEmail(@RequestParam(value = "value") String email) {
+		User obj = service.findByEmail(email);
+		return ResponseEntity.ok().body(obj);
+	}
+
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody UserNewDTO objDto) {
 		User obj = service.fromDTO(objDto);
@@ -64,15 +70,14 @@ public class UserResource {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}
-	
+
 	@RequestMapping(value = "/{userID}/overview", method = RequestMethod.GET)
-	public ResponseEntity<User> findOverviewByUserFromDateBetween(
-			@PathVariable Integer userID,
+	public ResponseEntity<User> findOverviewByUserFromDateBetween(@PathVariable Integer userID,
 			@RequestParam("startDate") @DateTimeFormat(pattern = "dd/MM/yyyy") Date startDate,
 			@RequestParam("endDate") @DateTimeFormat(pattern = "dd/MM/yyyy") Date endDate) {
 
 		User user = service.findOverviewByUserFromDateBetween(userID, startDate, endDate);
-		
+
 		return ResponseEntity.ok().body(user);
 	}
 }

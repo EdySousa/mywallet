@@ -23,7 +23,7 @@ import com.ed2nd.mywallet.services.exception.ObjectNotFoundException;
 
 @Service
 public class UserService {
-	
+
 	@Autowired
 	private BCryptPasswordEncoder pe;
 
@@ -32,37 +32,51 @@ public class UserService {
 
 	@Autowired
 	private WalletRepository walletRepository;
-	
-	
+
 	@Autowired
 	private EmailService emailService;
-	
-	
+
 	@Autowired
 	private WalletService walletService;
-	
+
 	public static UserSS authenticated() {
 		try {
 			return (UserSS) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		}
-		catch(Exception e){
+		} catch (Exception e) {
 			return null;
 		}
 	}
-	
-	
+
 	public List<User> findAll() {
 		return repo.findAll();
 	}
 
-	public User find(Integer id) {
-		
-		UserSS user = UserService.authenticated();
-		
-		if(user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
-			throw new AuthorizationException("Access denied"); 
+	public User findByEmail(String email) {
+
+		UserSS user = authenticated();
+
+		if (user == null || !user.hasRole(Perfil.ADMIN) && !email.equals(user.getUsername())) {
+			throw new AuthorizationException("Access denied!");
 		}
-		
+
+		User obj = repo.findByEmail(email);
+
+		if (obj == null) {
+			throw new ObjectNotFoundException(
+					"Object not found id: " + user.getId() + ", Type: " + User.class.getName());
+		}
+
+		return obj;
+	}
+
+	public User find(Integer id) {
+
+		UserSS user = UserService.authenticated();
+
+		if (user == null || !user.hasRole(Perfil.ADMIN) && !id.equals(user.getId())) {
+			throw new AuthorizationException("Access denied");
+		}
+
 		Optional<User> obj = repo.findById(id);
 		return obj.orElseThrow(
 				() -> new ObjectNotFoundException("Object not found! Id: " + id + ", Type: " + User.class.getName()));
@@ -74,9 +88,9 @@ public class UserService {
 		obj.setEmail(obj.getEmail().toLowerCase());
 		obj = repo.save(obj);
 		walletRepository.saveAll(obj.getWallets());
-		
+
 		emailService.sendUserConfirmationHtmlEmail(obj);
-		
+
 		return obj;
 	}
 
@@ -111,11 +125,11 @@ public class UserService {
 	}
 
 	public User findOverviewByUserFromDateBetween(Integer userID, Date startDate, Date endDate) {
-		
+
 		User user = find(userID);
 		List<Wallet> wallets = walletService.findAllByUserIdFromDateBetween(userID, startDate, endDate);
 		user.setWallets(wallets);
-		
+
 		return user;
 	}
 
