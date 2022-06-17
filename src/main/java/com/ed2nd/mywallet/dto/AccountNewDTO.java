@@ -26,14 +26,17 @@ public class AccountNewDTO implements Serializable {
 	@NotNull(message = "The Wallet ID should not be null or whitespace")
 	@Positive(message = "The Wallet ID should be numeric positive")
 	private Integer walletId;
+	
+	private Double value;
 
 	public AccountNewDTO() {
 	}
 
-	public AccountNewDTO(String name, Date date, Integer walletId) {
+	public AccountNewDTO(String name, Date date, Double value, Integer walletId) {
 		super();
 		this.name = name;
 		this.date = date;
+		this.value = value;
 		this.walletId = walletId;
 	}
 
@@ -51,6 +54,14 @@ public class AccountNewDTO implements Serializable {
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+	
+	public Double getValue() {
+		return value;
+	}
+
+	public void setValue(Double value) {
+		this.value = value;
 	}
 
 	public Integer getWalletId() {

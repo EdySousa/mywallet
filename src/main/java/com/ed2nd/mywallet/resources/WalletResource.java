@@ -62,19 +62,19 @@ public class WalletResource {
 	}
 	
 	@RequestMapping(value = "/user/{userID}", method = RequestMethod.GET)
-	public ResponseEntity<List<Wallet>> findAllByUser(@PathVariable Integer userID) {
-		List<Wallet> list = service.findAllByUserId(userID);
-		return ResponseEntity.ok().body(list);
+	public ResponseEntity<Wallet> findAllByUser(@PathVariable Integer userID) {
+		Wallet wallet = service.findAllByUserId(userID);
+		return ResponseEntity.ok().body(wallet);
 	}
 
 	@RequestMapping(value = "/user/{userID}/date", method = RequestMethod.GET)
-	public ResponseEntity<List<Wallet>> findAllByUserFromDateBetween(
+	public ResponseEntity<Wallet> findAllByUserFromDateBetween(
 			@PathVariable Integer userID,
 			@RequestParam("startDate") @DateTimeFormat(pattern = "dd/MM/yyyy") Date startDate,
 			@RequestParam("endDate") @DateTimeFormat(pattern = "dd/MM/yyyy") Date endDate) {
 
-		List<Wallet> list = service.findAllByUserIdFromDateBetween(userID, startDate, endDate);
-		return ResponseEntity.ok().body(list);
+		Wallet wallet = service.findAllByUserIdFromDateBetween(userID, startDate, endDate);
+		return ResponseEntity.ok().body(wallet);
 	}
 
 }

@@ -10,6 +10,6 @@ import com.ed2nd.mywallet.domain.User;
 public interface UserRepository extends JpaRepository<User, Integer> {
 
 	@Transactional(readOnly = true)
-	User findByEmail(String email);
+	User findByEmailIgnoreCase(String email);
 
 }

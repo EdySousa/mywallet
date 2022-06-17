@@ -49,8 +49,8 @@ public class BudgetResource {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> update(@Valid @RequestBody Budget obj, @PathVariable Integer id) {
-		obj.setId(id);
+	public ResponseEntity<Void> update(@Valid @RequestBody BudgetNewDTO objDto, @PathVariable Integer id) {
+		Budget obj = service.updateFromDTO(objDto, id);
 		obj = service.update(obj);
 		return ResponseEntity.noContent().build();
 	}

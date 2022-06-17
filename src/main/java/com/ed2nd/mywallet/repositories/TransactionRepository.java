@@ -17,7 +17,7 @@ import com.ed2nd.mywallet.domain.Transaction;
 public interface TransactionRepository extends JpaRepository<Transaction, Integer> {
 
 	@Transactional(readOnly = true)
-	@Query("SELECT obj FROM Transaction obj WHERE obj.date >= :startDate AND obj.date <= :endDate AND obj.account.wallet.user.id = :userID")
+	@Query("SELECT obj FROM Transaction obj WHERE obj.date >= :startDate AND obj.date <= :endDate AND obj.account.wallet.user.id = :userID order by obj.date desc")
 	List<Transaction> findAllByUserIdFromDateBetween(@Param("userID") Integer userID, @Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
 	@Transactional(readOnly = true)

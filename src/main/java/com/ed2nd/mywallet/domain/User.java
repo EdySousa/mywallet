@@ -1,9 +1,7 @@
 package com.ed2nd.mywallet.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -15,7 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import com.ed2nd.mywallet.domain.enums.Perfil;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -36,9 +34,10 @@ public class User implements Serializable {
 	@JsonIgnore
 	private String password;
 
-	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-	private List<Wallet> wallets = new ArrayList<>();
+	@OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+	private Wallet wallet;
 
+	@JsonIgnore
 	@ElementCollection(fetch = FetchType.EAGER)
 	@CollectionTable(name = "PERFIS")
 	private Set<Perfil> perfis = new HashSet<>();
@@ -52,7 +51,7 @@ public class User implements Serializable {
 		this.id = id;
 		this.firstName = firstName;
 		this.lastName = lastName;
-		this.email = email.toLowerCase();
+		this.email = email;
 		this.password = password;
 		addPerfil(Perfil.USER);
 	}
@@ -109,12 +108,12 @@ public class User implements Serializable {
 		perfis.add(perfil);
 	}
 
-	public List<Wallet> getWallets() {
-		return wallets;
+	public Wallet getWallet() {
+		return wallet;
 	}
 
-	public void setWallets(List<Wallet> wallets) {
-		this.wallets = wallets;
+	public void setWallet(Wallet wallet) {
+		this.wallet = wallet;
 	}
 
 	@Override
@@ -153,19 +152,16 @@ public class User implements Serializable {
 		builder.append(lastName);
 		builder.append(", email: ");
 		builder.append(email);
-		
-		for(Wallet wal: getWallets()) {
-			builder.append("\nWallets:\n");
-			builder.append(wal.getDescription());
-		}
-		
-		for(Perfil per: getPerfis()) {
+
+		builder.append("\nWallet: ");
+		builder.append(wallet.getDescription());
+
+		for (Perfil per : getPerfis()) {
 			builder.append("\nPerfis:\n");
 			builder.append(per.name());
 		}
-		
+
 		return builder.toString();
 	}
-	
-	
+
 }

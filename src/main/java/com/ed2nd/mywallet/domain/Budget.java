@@ -51,6 +51,10 @@ public class Budget implements Serializable {
 		this.date = date;
 		this.account = account;
 	}
+	
+	public Integer getAccountId() {
+		return account.getId();
+	}
 
 	public Double getSpent() {
 		return transactions.stream().filter(x -> x.getBudget() != null).mapToDouble(x -> x.getValue()).sum();

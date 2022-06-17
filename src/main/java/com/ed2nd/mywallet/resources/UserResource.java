@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.ed2nd.mywallet.domain.User;
+import com.ed2nd.mywallet.domain.Wallet;
 import com.ed2nd.mywallet.dto.UserDTO;
 import com.ed2nd.mywallet.dto.UserNewDTO;
 import com.ed2nd.mywallet.services.UserService;
@@ -72,12 +73,12 @@ public class UserResource {
 	}
 
 	@RequestMapping(value = "/{userID}/overview", method = RequestMethod.GET)
-	public ResponseEntity<User> findOverviewByUserFromDateBetween(@PathVariable Integer userID,
+	public ResponseEntity<Wallet> findOverviewByUserFromDateBetween(@PathVariable Integer userID,
 			@RequestParam("startDate") @DateTimeFormat(pattern = "dd/MM/yyyy") Date startDate,
 			@RequestParam("endDate") @DateTimeFormat(pattern = "dd/MM/yyyy") Date endDate) {
 
-		User user = service.findOverviewByUserFromDateBetween(userID, startDate, endDate);
+		Wallet wallet = service.findOverviewByUserFromDateBetween(userID, startDate, endDate);
 
-		return ResponseEntity.ok().body(user);
+		return ResponseEntity.ok().body(wallet);
 	}
 }

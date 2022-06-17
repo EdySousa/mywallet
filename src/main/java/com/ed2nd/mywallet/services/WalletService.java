@@ -7,6 +7,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ed2nd.mywallet.domain.Account;
 import com.ed2nd.mywallet.domain.User;
 import com.ed2nd.mywallet.domain.Wallet;
 import com.ed2nd.mywallet.dto.WalletNewDTO;
@@ -20,6 +21,9 @@ public class WalletService {
 
 	@Autowired
 	private WalletRepository repo;
+	
+	@Autowired
+	private AccountService accountService;
 
 	@Autowired
 	private UserService userService;
@@ -50,19 +54,17 @@ public class WalletService {
 		repo.deleteById(id);
 	}
 
-	public List<Wallet> findAllByUserIdFromDateBetween(Integer userID, Date startDate, Date endDate) {
-		UserSS userSS = UserService.authenticated();
-		
-		if(userSS == null) {
-			throw new AuthorizationException("Acess dinied");
-		}
-		
+	public Wallet findAllByUserIdFromDateBetween(Integer userID, Date startDate, Date endDate) {
+
 		User user = userService.find(userID);
+		Wallet wallet = repo.findByUser(user);
+		List<Account> accounts = accountService.findAllByUserIdFromDateBetween(user.getId(), startDate, endDate);
+		wallet.setAccount(accounts);
 		
-		return repo.findByUserDateBetween(user, startDate, endDate);
+		return wallet;
 	}
 
-	public List<Wallet> findAllByUserId(Integer userID) {
+	public Wallet findAllByUserId(Integer userID) {
 		UserSS userSS = UserService.authenticated();
 		
 		if(userSS == null) {

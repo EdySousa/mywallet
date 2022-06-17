@@ -59,7 +59,7 @@ public class UserService {
 			throw new AuthorizationException("Access denied!");
 		}
 
-		User obj = repo.findByEmail(email);
+		User obj = repo.findByEmailIgnoreCase(email);
 
 		if (obj == null) {
 			throw new ObjectNotFoundException(
@@ -85,9 +85,9 @@ public class UserService {
 	@Transactional
 	public User insert(User obj) {
 		obj.setId(null);
-		obj.setEmail(obj.getEmail().toLowerCase());
+		obj.setEmail(obj.getEmail());
 		obj = repo.save(obj);
-		walletRepository.saveAll(obj.getWallets());
+		walletRepository.save(obj.getWallet());
 
 		emailService.sendUserConfirmationHtmlEmail(obj);
 
@@ -114,23 +114,23 @@ public class UserService {
 
 		User user = new User(null, obj.getFirstName(), obj.getLastName(), obj.getEmail(), pe.encode(obj.getPassword()));
 		Wallet wallet = new Wallet(null, date, obj.getDescription(), user);
-		user.getWallets().add(wallet);
+		user.setWallet(wallet);
 		return user;
 	}
 
 	private void updateData(User newObj, User obj) {
 		newObj.setFirstName(obj.getFirstName());
 		newObj.setLastName(obj.getLastName());
-		newObj.setEmail(obj.getEmail() != null ? obj.getEmail().toLowerCase() : newObj.getEmail().toLowerCase());
+		newObj.setEmail(obj.getEmail() != null ? obj.getEmail() : newObj.getEmail());
 	}
 
-	public User findOverviewByUserFromDateBetween(Integer userID, Date startDate, Date endDate) {
+	public Wallet findOverviewByUserFromDateBetween(Integer userID, Date startDate, Date endDate) {
 
 		User user = find(userID);
-		List<Wallet> wallets = walletService.findAllByUserIdFromDateBetween(userID, startDate, endDate);
-		user.setWallets(wallets);
+		Wallet wallet = walletService.findAllByUserIdFromDateBetween(userID, startDate, endDate);
+		user.setWallet(wallet);
 
-		return user;
+		return wallet;
 	}
 
 }

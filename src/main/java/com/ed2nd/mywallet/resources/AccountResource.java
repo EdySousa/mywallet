@@ -38,7 +38,7 @@ public class AccountResource {
 	public ResponseEntity<Account> find(@PathVariable Integer id) {
 		Account obj = service.find(id);
 		return ResponseEntity.ok().body(obj);
-	}
+	}	
 
 	@RequestMapping(method = RequestMethod.POST)
 	public ResponseEntity<Void> insert(@Valid @RequestBody AccountNewDTO objDto) {
@@ -56,7 +56,7 @@ public class AccountResource {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public ResponseEntity<Void> update(@PathVariable Integer id) {
+	public ResponseEntity<Void> delete(@PathVariable Integer id) {
 		service.delete(id);
 		return ResponseEntity.noContent().build();
 	}

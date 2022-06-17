@@ -54,8 +54,8 @@ public class TransactionResource {
 	}
 
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public ResponseEntity<Void> update(@Valid @RequestBody Transaction obj, @PathVariable Integer id) {
-		obj.setId(id);
+	public ResponseEntity<Void> update(@Valid @RequestBody TransactionNewDTO objDto, @PathVariable Integer id) {
+		Transaction obj = service.updateFromDTO(objDto, id);
 		obj = service.update(obj);
 		return ResponseEntity.noContent().build();
 	}

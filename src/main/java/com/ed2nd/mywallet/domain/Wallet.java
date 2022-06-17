@@ -7,12 +7,11 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -22,7 +21,6 @@ public class Wallet implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
 	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
@@ -30,10 +28,12 @@ public class Wallet implements Serializable {
 	private String description;
 
 	@JsonIgnore
-	@ManyToOne
+	@OneToOne
 	@JoinColumn(name = "user_id")
+	@MapsId
 	private User user;
 
+	//@JsonIgnore
 	@OneToMany(mappedBy = "wallet", cascade = CascadeType.ALL)
 	private List<Account> accounts = new ArrayList<>();
 

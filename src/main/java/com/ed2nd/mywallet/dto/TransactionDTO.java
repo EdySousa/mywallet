@@ -30,8 +30,9 @@ public class TransactionDTO implements Serializable {
 	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private Date date;
 	
-	private Integer accountId;
+	private String accountName;
 	private Integer budgetId;
+	private Integer accountId;
 
 	public TransactionDTO() {
 	}
@@ -42,8 +43,9 @@ public class TransactionDTO implements Serializable {
 		this.name = obj.getName();
 		this.value = obj.getValue();
 		this.date = obj.getDate();
-		this.accountId = obj.getAccount().getId();
+		this.accountName = obj.getAccount().getName();
 		this.budgetId = obj.getBudget() != null ? obj.getBudget().getId(): null;
+		this.accountId = obj.getAccount().getId();
 	}
 	
 
@@ -87,12 +89,12 @@ public class TransactionDTO implements Serializable {
 		this.date = date;
 	}
 
-	public Integer getAccountId() {
-		return accountId;
+	public String getAccountName() {
+		return accountName;
 	}
 
-	public void setAccountId(Integer accountId) {
-		this.accountId = accountId;
+	public void setAccountName(String accountName) {
+		this.accountName = accountName;
 	}
 
 	public Integer getBudgetId() {
@@ -101,6 +103,14 @@ public class TransactionDTO implements Serializable {
 
 	public void setBudgetId(Integer budgetId) {
 		this.budgetId = budgetId;
+	}
+
+	public Integer getAccountId() {
+		return accountId;
+	}
+
+	public void setAccountId(Integer accountId) {
+		this.accountId = accountId;
 	}
 
 }

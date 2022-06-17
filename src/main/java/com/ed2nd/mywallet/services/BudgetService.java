@@ -49,7 +49,7 @@ public class BudgetService {
 		try {
 			repo.deleteById(id);
 		} catch (DataIntegrityViolationException e) {
-			throw new DataIntegrityException("Não é possível elimiar Budget que tem Transação associada");
+			throw new DataIntegrityException("Não é possível elimiar Budget que tem Despesas associadas");
 		}
 	}
 	
@@ -67,6 +67,19 @@ public class BudgetService {
 		Account account = accountService.find(objDto.getAccountId());
 		
 		return new Budget(null, objDto.getName(), objDto.getBudget(), date, account);
+	}
+	
+	public Budget updateFromDTO(BudgetNewDTO objDto, Integer id) {
+		
+		Budget budget = find(id);
+		Account account = accountService.find(objDto.getAccountId());
+		
+		budget.setName(objDto.getName());
+		budget.setDate(objDto.getDate());
+		budget.setBudget(objDto.getBudget());
+		budget.setAccount(account);
+		
+		return budget;
 	}
 
 }

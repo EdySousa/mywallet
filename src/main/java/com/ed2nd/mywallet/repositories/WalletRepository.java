@@ -1,7 +1,6 @@
 package com.ed2nd.mywallet.repositories;
 
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,10 +16,10 @@ public interface WalletRepository extends JpaRepository<Wallet, Integer> {
 	
 	@Transactional(readOnly = true)
 	@Query("SELECT obj FROM Wallet obj WHERE obj.date >= :startDate AND obj.date <= :endDate AND obj.user = :user")
-	List<Wallet> findByUserDateBetween(@Param("user") User user, @Param("startDate") Date startDate, @Param("endDate") Date endDate);
+	Wallet findByUserDateBetween(@Param("user") User user, @Param("startDate") Date startDate, @Param("endDate") Date endDate);
 
 	@Transactional(readOnly = true)
-	List<Wallet> findByUser(User user);
+	Wallet findByUser(User user);
 
 
 }

@@ -29,6 +29,8 @@ public class Account implements Serializable {
 
 	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
 	private Date date;
+	
+	private Double value;
 
 	@JsonIgnore
 	@ManyToOne
@@ -44,11 +46,12 @@ public class Account implements Serializable {
 	public Account() {
 	}
 
-	public Account(Integer id, String name, Date date, Wallet wallet) {
+	public Account(Integer id, String name, Date date, Double value, Wallet wallet) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.date = date;
+		this.value = value;
 		this.wallet = wallet;
 	}
 
@@ -88,6 +91,14 @@ public class Account implements Serializable {
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+	
+	public Double getValue() {
+		return value;
+	}
+
+	public void setValue(Double value) {
+		this.value = value;
 	}
 
 	public Wallet getWallet() {

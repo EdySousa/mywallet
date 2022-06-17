@@ -90,4 +90,23 @@ public class TransactionService {
 		
 		return transaction;
 	}
+	
+	public Transaction updateFromDTO(TransactionNewDTO objDto, Integer id) {
+		
+		Date date = (objDto.getDate() != null) ? objDto.getDate() : new Date();
+		
+		Transaction tran = find(id);
+		Budget bgt = budgetService.find(objDto.getBudgetId());
+		Account acc = accountService.find(objDto.getAccountId());
+		
+		tran.setName(objDto.getName());
+		tran.setDate(date);
+		tran.setType(objDto.getType());
+		tran.setValue(objDto.getValue());
+		tran.setBudget(bgt);
+		tran.setAccount(acc);
+				
+		
+		return tran;
+	}
 }
